@@ -5,3 +5,4 @@
 Written response, select 3 of the 11 steps and write a short paragraph explaining how you would go about executing on these parts of the ML Lifecycle.
 
 Exact solutions will vary but should be somewhat related to the answers below.
+
