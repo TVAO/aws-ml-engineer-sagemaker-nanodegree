@@ -66,7 +66,7 @@ Finally, I would consider if I could find other means of enriching the existing 
 
 ### Create a table with the models you ran, the hyperparameters modified, and the kaggle score.
 |model|timelimit|presets|hp-method|score|
-||--|--|--|--|
+|--|--|--|--|--|
 |initial|600|best quality|none|1.33|
 |add_features|600|best quality|none|0.47|
 |hpo|600|best quality|none|0.55|
