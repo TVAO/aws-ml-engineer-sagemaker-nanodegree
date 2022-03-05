@@ -31,39 +31,51 @@ def lambda_handler(event, context):
     }
 
 import json
-import sagemaker
 import base64
-from sagemaker.serializers import IdentitySerializer
-from sagemaker.predictor import Predictor 
+import boto3 
 
 # Fill this in with the name of your deployed model
 ENDPOINT = "image-classification-2022-03-05-14-01-41-157"
+runtime= boto3.client('runtime.sagemaker')
 
 def lambda_handler(event, context):
     """A function to invoke model endpoint and return prediction"""
+    print(event) 
 
     # Decode the image data
     image = base64.b64decode(event['image_data'])
-
+    
+    # QUESTION: Could not get commented out code to work. How can I solve this more elegantly? 
+    # import sagemaker
+    # from sagemaker.serializers import IdentitySerializer
+    # from sagemaker.predictor import Predictor 
     # Instantiate a Predictor
-    predictor = Predictor(ENDPOINT)
-
+    # predictor = Predictor(ENDPOINT)
     # For this model the IdentitySerializer needs to be "image/png"
-    predictor.serializer = IdentitySerializer("image/png")
-    
+    # predictor.serializer = IdentitySerializer("image/png")
     # Make a prediction:
-    inferences = predictor.predict(data=image)
-    
+    # inferences = predictor.predict(data=image)
     # We return the data back to the Step Function    
-    event["inferences"] = inferences.decode('utf-8')
+    # event["inferences"] = inferences.decode('utf-8')
+    
+    response = runtime.invoke_endpoint(EndpointName=ENDPOINT, ContentType='application/x-image', Body=image)
+    inferences = response['Body'].read().decode('utf-8')
+    event["inferences"] = [float(x) for x in inferences[1:-1].split(',')]
+    
     return {
         'statusCode': 200,
-        'body': json.dumps(event)
+        'body': {
+            "image_data": event['image_data'],
+            "s3_bucket": event['s3_bucket'],
+            "s3_key": event['s3_key'],
+            "inferences": event['inferences']
+        }
+        # 'body': json.dumps(event)
     }
 
 import json
 
-THRESHOLD = .93
+THRESHOLD = .7
 
 def lambda_handler(event, context):
     
@@ -78,7 +90,7 @@ def lambda_handler(event, context):
     if meets_threshold:
         pass
     else:
-        raise("THRESHOLD_CONFIDENCE_NOT_MET")
+        raise ValueError(f"No prediction satisfies threshold of {THRESHOLD}")
 
     return {
         'statusCode': 200,
