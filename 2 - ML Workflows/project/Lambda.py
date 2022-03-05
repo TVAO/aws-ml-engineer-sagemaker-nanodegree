@@ -68,7 +68,7 @@ THRESHOLD = .93
 def lambda_handler(event, context):
     
     # Grab the inferences from the event
-    inferences = evemt['inferences']
+    inferences = event['inferences']
     
     # Check if any values in our inferences are above THRESHOLD
     meets_threshold = any (inference >= THRESHOLD for inference in inferences)
