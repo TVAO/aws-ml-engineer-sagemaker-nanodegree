@@ -40,7 +40,6 @@ runtime= boto3.client('runtime.sagemaker')
 
 def lambda_handler(event, context):
     """A function to invoke model endpoint and return prediction"""
-    print(event) 
 
     # Decode the image data
     image = base64.b64decode(event['image_data'])
