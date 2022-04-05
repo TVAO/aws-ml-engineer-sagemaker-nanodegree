@@ -24,6 +24,14 @@ Remember that your README should:
 - Retrieve the best best hyperparameters from all your training jobs
 
 ## Debugging and Profiling
+**PROBLEM**: 
+I am unable to run the hyperparameter tuning job, as the default limit for GPU-based instance types are set to 0 and I have no permissions to request a larger machine in support.
+Thus, I've contacted mentors but still uploaded my final submission, since I am unable to complete the README as-is on AWS, since no notebook instance types work.
+
+The error being generated regardless of choice of estimator notebook instance:
+
+ResourceLimitExceeded: An error occurred (ResourceLimitExceeded) when calling the CreateHyperParameterTuningJob operation: The account-level service limit 'ml.g4dn.xlarge for training job usage' is 0 Instances, with current utilization of 0 Instances and a request delta of 4 Instances. Please contact AWS support to request an increase for this limit.
+
 **TODO**: Give an overview of how you performed model debugging and profiling in Sagemaker
 
 ### Results
