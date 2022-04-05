@@ -47,7 +47,8 @@ def train(model, train_loader, criterion, optimizer):
     Trains model on loaded training data, by minimizing criterion using optimizer. 
     Includes debugging/profiling hooks to troubleshoot training process. 
     '''
-    logger.info(f"Training model on complete training data" )
+    logger.info(f"Training model on complete training data")
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model.train()
     loss_acc = 0
     correct_labels = 0
@@ -126,6 +127,7 @@ def create_data_loaders(data, batch_size):
     
 def main(args):
     # Log info
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     logger.info(f"Running on device: {device}")
     logger.info(f"Hyperparameters: Learning rate: {args.lr},  Epsilon: {args.eps}, Weight Decay: {args.weight_decay}, Batch Size: {args.batch_size}, Epoch: {args.epochs}")
     logger.info(f"Data path: {args.data_dir}")
