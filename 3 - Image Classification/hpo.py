@@ -36,7 +36,6 @@ def test(model, test_loader):
     with torch.no_grad(): # Disable gradients and backprop for fast forward pass inference 
         for images, actual_labels in test_loader: # We don't need GPU device for inference 
             predicted_labels = model(images)
-            loss = 
             loss = criterion(predicted_labels, actual_labels)
             predicted_label_indices = predicted_labels.argmax(dim=1, keepdim=True)
             loss_acc += loss.item() * images.size(0) # loss.item() gives loss of entire batch divided by size
