@@ -10,8 +10,13 @@ import torchvision.transforms as transforms
 
 #Custom dependencies
 import os 
+import sys
 import logging 
 import argparse
+
+# Avoid OS truncated error
+from PIL import ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 #Custom logging 
 logger = logging.getLogger(__name__)
