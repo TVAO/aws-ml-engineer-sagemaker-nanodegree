@@ -158,7 +158,7 @@ def main(args):
         model=train(model, train_data_loader, criterion, optimizer)
          # Test the model to see its accuracy
         logger.info(f"Epoch {epoch} - Starting testing...")
-        test(model, test_data_loader, criterion)
+        test(model, test_data_loader)
     
     # Save the trained model 
     logger.info("Saving model")
