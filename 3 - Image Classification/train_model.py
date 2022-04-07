@@ -10,8 +10,13 @@ import torchvision.transforms as transforms
 
 # Custom libraries
 import os
+import sys
 import logging
 import argparse
+
+# Fix OS truncation error
+from PIL import ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 #Import dependencies for Debugging andd Profiling
 import smdebug.pytorch as smd
@@ -35,6 +40,7 @@ def test(model, test_loader):
     hook.set_mode(smd.modes.EVAL) # set sm debugger hook 
     loss_acc = 0
     correct_labels = 0
+    criterion = nn.CrossEntropyLoss()
     with torch.no_grad():
         for images, actual_labels in test_loader:
             images=images
@@ -163,7 +169,7 @@ def main(args):
         model=train(model, train_data_loader, criterion, optimizer)
         # Test the model to see its accuracy
         logger.info(f"Epoch {epoch_no} - Starting Testing phase.")
-        test(model, test_data_loader, criterion)
+        test(model, test_data_loader)
 
     # Save the trained model
     logger.info("Saving model...")
