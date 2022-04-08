@@ -42,7 +42,7 @@ def test(model, test_loader):
             correct_labels += predicted_label_indices.eq(actual_labels.view_as(predicted_label_indices)).sum().item() 
             
         total_loss = loss_acc / len(test_loader.dataset)
-        total_correct_labels = running_corrects/ len(test_loader.dataset)
+        total_correct_labels = correct_labels/ len(test_loader.dataset)
         logger.info( "\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n".format(
             total_loss, correct_labels, len(test_loader.dataset), 100.0 * total_correct_labels
         ))
