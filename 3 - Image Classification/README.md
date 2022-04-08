@@ -58,8 +58,8 @@ During training and testing in the `.py` files, we add hooks to keep track of lo
 Plot showing the cross entropy loss during training and testing: 
 ![Loss](images/loss.png "Loss")
 
-The loss is not smooth and very spiky
-I suppose we could address it by trying out other batch sizes with shuffling our experimenting more with the network architecture. 
+The loss is not smooth and very spiky. Also, it seems to start overfitting so maybe we should use fewer steps.
+I suppose we could also try out other batch sizes with shuffling and experiment with other network architectures. 
 
 ### Results
 
