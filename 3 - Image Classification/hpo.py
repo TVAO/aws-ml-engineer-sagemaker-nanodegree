@@ -23,6 +23,8 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 logger.addHandler(logging.StreamHandler(sys.stdout))
 
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
 def test(model, test_loader):
     '''
     Yields test accuracy/loss of model from model and test data loader.
@@ -35,6 +37,8 @@ def test(model, test_loader):
     criterion = nn.CrossEntropyLoss()
     with torch.no_grad(): # Disable gradients and backprop for fast forward pass inference 
         for images, actual_labels in test_loader: # We don't need GPU device for inference 
+            images = images.to(device)
+            actual_labels = actual_labels.to(device)
             predicted_labels = model(images)
             loss = criterion(predicted_labels, actual_labels)
             predicted_label_indices = predicted_labels.argmax(dim=1, keepdim=True)
@@ -142,7 +146,6 @@ def main(args):
     
     # Initialize a model to GPU by calling the net function
     model = net()
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = model.to(device)
     
     # Load data

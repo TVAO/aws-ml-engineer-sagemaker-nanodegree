@@ -43,8 +43,8 @@ def test(model, test_loader):
     criterion = nn.CrossEntropyLoss()
     with torch.no_grad():
         for images, actual_labels in test_loader:
-            images=images
-            actual_labels=actual_labels
+            images=images.to(device)
+            actual_labels=actual_labels.to(device)
             predicted_labels=model(images)
             loss=criterion(predicted_labels, actual_labels)
             predicted_label_indices = predicted_labels.argmax(dim=1, keepdim=True)
