@@ -43,17 +43,13 @@ We use the following hyperparameters:
 These values are picked from experiments and rule of thumb tips. 
 
 The `hpo.py` file is used for hyperparameter tuning and `train_model.py` for training jobs: 
-**TODO**: hpo screenshot
-**TODO**: training screenshot 
+
+![Hyper Tuning Job](images/hpo.png "Hyperparameter Tuning Job") 
+![Best Hyperparameters](images/best_hpo.png "Best Hyperparameters")
+![Training Job](images/train.png "Training Job")
+
 
 ## Debugging and Profiling
-
-**PROBLEM**: 
-I am unable to run the hyperparameter tuning job, as the default limit for GPU-based instance types are set to 0 and I have no permissions to request a larger machine in support. Thus, I had to run it on an 'ml.m5.xlarge' instance without GPU. Your support has to increase AWS limit. 
-
-The error being generated when using gpu-based notebook instances:
-
-ResourceLimitExceeded: An error occurred (ResourceLimitExceeded) when calling the CreateHyperParameterTuningJob operation: The account-level service limit 'ml.g4dn.xlarge for training job usage' is 0 Instances, with current utilization of 0 Instances and a request delta of 4 Instances. Please contact AWS support to request an increase for this limit.
 
 We now give an overview of how our model performed model debugging and profiling in sagemaker: 
 
