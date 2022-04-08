@@ -166,7 +166,7 @@ def main(args):
     
     # Save the trained model 
     logger.info("Saving model")
-    torch.save(model, path)
+    torch.save(model, os.path.join(args.model_dir, 'model.pth'))
     logger.info("Saved model")
     
 
