@@ -56,7 +56,7 @@ We now give an overview of how our model performed model debugging and profiling
 During training and testing in the `.py` files, we add hooks to keep track of loss over time. In addition, we add rules in `train_and_deploy.ipynb` tracking issues like vanishing gradients, overfitting, poor weights etc. 
 
 Plot showing the cross entropy loss during training and testing: 
-**TODO**: screenshot of loss 
+![Loss](images/loss.png "Loss")
 
 The loss is not smooth and very spiky
 I suppose we could address it by trying out other batch sizes with shuffling our experimenting more with the network architecture. 
@@ -67,13 +67,13 @@ The profiler report can be found in the exported `profiler_report/profiler-outpu
 
 The profiling/debugging helped me track if the training process was going well, and tracking is the loss went down correctly over time. 
 
-**TODO**: profiler output and file link + html/pdf file submission 
+The profiler output can be found in this [link](ProfilerReport/profiler-output/profiler-report.html).
+
 
 ## Model Deployment
 
 The model was deployed to an 'ml.m5.xlarge' instance type and `train_and_deploy.ipynb` is used to deploy and test our predictor endpoint. For testing, I simply stored a few test images of dogs locally and fed those via the notebook to the inference endpoint. Instead of deploying the predictor directly, I could also have used boto3.  
 
-
-**TODO**: Screenshot of the deployed active endpoint in Sagemaker.
-
+![Endpoint](images/endpoint.png "Endpoint") 
+![Endpoint Details](images/endpoint_details.png "Endpoint Details")
 
