@@ -18,7 +18,9 @@ Upload the data to an S3 bucket through the AWS Gateway or use the `train_and_de
 
 - `hpo.py`: code used to do hyperparameter tuning jobs that train and test our image classifier models with different hyperparameters
 - `train_model.py`: code that is used to run a training job that tests an image classifier with the best hyperparameters derived from tuning
+- `endpoint.py`: custom prediction deployment endpoint that transforms image, (de)serializes image payloads correctly, and loads saved s3 model from training job    
 - `train_and_deploy.ipynb`: notebook that triggers hyperparameter tuning, debugging, profiling, and testing of deployed image classifier
+
 
 ## Hyperparameter Tuning
 
@@ -28,7 +30,7 @@ Note, we tune at least two hyperparameters as required.
 Finally, the README includes:
 - Screenshot of completed training and hyperparameter tuning jobs 
 - Log metrics during the training process (debugging and profiling)
-- Best best hyperparameters from all our training jobs
+- Best hyperparameters from all our training jobs
 
 We use a pretrained resnet50 model from Pytorch to avoid retraining an image classifier from scratch on our dog breed image data set. 
 
@@ -36,8 +38,8 @@ We use this particular model because it is a convolutional neural network, which
 
 We use the following hyperparameters:
 - Learning rate: [0.000001, 1.0]
-- Epsilon: [1, 3]
-- Weight decay: [0, 0.1] 
+- Epsilon: [0.00000001, 3]
+- Weight decay: [0.001, 0.1] 
 - Batch size: 64, 128
 
 These values are picked from experiments and rule of thumb tips. 
@@ -72,8 +74,19 @@ The profiler output can be found in this [link](ProfilerReport/profiler-output/p
 
 ## Model Deployment
 
-The model was deployed to an 'ml.m5.xlarge' instance type and `train_and_deploy.ipynb` is used to deploy and test our predictor endpoint. For testing, I simply stored a few test images of dogs locally and fed those via the notebook to the inference endpoint. Instead of deploying the predictor directly, I could also have used boto3.  
+The model was deployed to an 'ml.m5.xlarge' instance type and `train_and_deploy.ipynb` is used to deploy and test our predictor endpoint. For testing, I simply stored a few test images of dogs locally and fed those via the notebook to the inference endpoint. Instead of deploying the predictor directly, I also tried using the boto3 sagemaker runtime. Note, I had to override the  
 
 ![Endpoint](images/endpoint.png "Endpoint") 
 ![Endpoint Details](images/endpoint_details.png "Endpoint Details")
 
+Code sample for querying the model:
+
+```
+ENDPOINT_NAME = predictor.endpoint_name # e.g., "pytorch-inference-2022-04-11-13-02-45-640" 
+runtime= boto3.client('runtime.sagemaker') # e.g., test_file_path = './dogImages/test/011.Australian_cattle_dog/Australian_cattle_dog_00727.jpg'
+with open(test_file_path , "rb") as f:
+    image = f.read()
+    response = runtime.invoke_endpoint(EndpointName=ENDPOINT_NAME, ContentType='image/jpeg', Body=image) 
+    response_body = np.asarray(json.loads(response['Body'].read().decode('utf-8')))              
+    predicted_dog_breed = np.argmax(response_body, 1) + 1 
+```
